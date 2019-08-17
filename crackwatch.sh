@@ -1,10 +1,10 @@
 #!/bin/bash
 #
-# about: 		  crackwatch watches your cracking process and posts progress updates to slack
-# requirements:   slack webhook url (https://api.slack.com/incoming-webhooks)
-# usage: 		  ./crackwatch
-# with arguments: ./crackwatch <PROCESS> <POTFILE> <INTERVAL>
-# example: 		  ./crackwatch hashcat hashcat.pot 60
+# about:  crackwatch watches your cracking process and posts progress updates to slack
+# requirements:  slack webhook url (https://api.slack.com/incoming-webhooks)
+# usage:  ./crackwatch
+# with arguments:  ./crackwatch <PROCESS> <POTFILE> <INTERVAL>
+# example:  ./crackwatch hashcat hashcat.pot 60
 #
 # author: 0xoperant
 # 	based on https://github.com/secgroundzero/hashslack
