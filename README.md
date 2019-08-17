@@ -1,5 +1,9 @@
 # crackwatch
-crackwatch monitors a password cracking process and posts updates to slack
+Crackwatch monitors a specified password cracking process and posts periodic updates to slack. \n
+I've used it successfully with hashcat and mdxfind, but it should be able to work with others, like john. \n
+Be sure to specify the full path to the potfile, if it's not in the same directory. The interval is the \n
+length of time between updates. For example, `60` would post updates every hour. The webhook url can be \n
+provided as an argument, or added to the `webhook_url=""` variable in crackwatch.sh.
 
 requirements:    slack webhook url (https://api.slack.com/incoming-webhooks)
 
