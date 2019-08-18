@@ -12,7 +12,8 @@ Note: there is a bash version in the `master` branch.
 ---
 
 requirements: slack webhook url (https://api.slack.com/incoming-webhooks)
-              Once you have obtained a webhook url, add it to crackwatch.py
+              Once you have obtained a webhook url, add it to your environment variables.
+              example: `export WEBHOOK_URL=https://your.webhook/here`
 
 usage:        `python3 crackwatch.py -p <process> -f <potfile> -i <interval>`
 
@@ -20,4 +21,4 @@ usage:        `python3 crackwatch.py -p <process> -f <potfile> -i <interval>`
               <potfile> is the output file from that process
               <interval> is how often (in minutes) you want slack updates
 
-example:  `python3 crackwatch hashcat hashcat.pot 60`
+example:  `python3 crackwatch.py hashcat hashcat.pot 60`
