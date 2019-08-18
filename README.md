@@ -9,10 +9,13 @@ This can be adapted to pretty much any webhook. PRs are welcome.
 
 ---
 
-requirements:    slack webhook url (https://api.slack.com/incoming-webhooks)
+requirements: slack webhook url (https://api.slack.com/incoming-webhooks)
+              Once you have obtained a webhook url, add it to crackwatch.py
 
-usage:           `./crackwatch`
+usage:        `python3 crackwatch.py -p <process> -f <potfile> -i <interval>`
 
-with arguments:  `./crackwatch <PROCESS> <POTFILE> <INTERVAL>`
+              <process> is the process you want to monitor
+              <potfile> is the output file from that process
+              <interval> is how often (in minutes) you want slack updates
 
-example:         `./crackwatch hashcat hashcat.pot 60`
+example:  `python3 crackwatch hashcat hashcat.pot 60`
