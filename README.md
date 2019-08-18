@@ -13,7 +13,7 @@ Note: there is a bash version in the `master` branch.
 
 requirements: slack webhook url (https://api.slack.com/incoming-webhooks)
               Once you have obtained a webhook url, add it to your environment variables.
-              example: `export WEBHOOK_URL=https://your.webhook/here`
+              Example: `export WEBHOOK_URL=https://your.webhook/here`
 
 usage:        `python3 crackwatch.py -p <process> -f <potfile> -i <interval>`
 
