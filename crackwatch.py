@@ -11,24 +11,44 @@
 # author: 0xoperant
 # 	based on https://github.com/secgroundzero/hashslack
 
-import sys, getopt, subprocess, json, time
+import os, sys, getopt, subprocess, json, time
 from urllib import request, parse
 
-# provide your webhook here
-webhook_url = ''
+# check the webhook url is set
+try:
+    webhook_url = os.environ['WEBHOOK_URL']
+except KeyError:
+    print ("Error: you need to provide a webhook url, like this: export WEBHOOK_URL=<insert url here>")
+    sys.exit(1)
 
 # slack post function
 def post(text):
     post = {"text": "{0}".format(text)}
     try:
         json_data = json.dumps(post)
-        req = request.Request(webhook_url,
-                              data=json_data.encode('ascii'),
-                              headers={'Content-Type': 'application/json'})
+        req = request.Request(webhook_url, data=json_data.encode('ascii'), headers={'Content-Type': 'application/json'})
         resp = request.urlopen(req)
     except Exception as em:
         print ("Error: " + str(em))
 
+# process checking function
+def getpid(process):
+    try:
+        pid = int(subprocess.check_output(['pgrep', process], encoding='UTF-8'))
+    except subprocess.CalledProcessError as e:
+        print (e.output)
+        pid = 0
+    return pid
+
+# count them cracks
+def gethashes(potfile):
+    try:
+        with open(potfile) as l:
+            cracks = int(sum(1 for _ in l))
+    except IOError as e:
+            print (e)
+    return cracks
+        
 def main(argv):
     # gather required arguments
     try:
@@ -47,19 +67,17 @@ def main(argv):
         elif opt in ("-i", "--iinterval"):
             interval = int(arg)
     
-    # check to see if the process is running
-    if (subprocess.getoutput('pgrep ' + process)) != '':
-        with open(potfile) as l:
-            hashes = int(sum(1 for _ in l))
+    # check to see if the process exists
+    if getpid(process) != 0:
+        hashes = gethashes(potfile)
         print ('Monitoring ' + process + '! I will tell you when there are new hashes. Otherwise, I will post an update every ' + str(interval) + ' minutes.')
-        post ("New Session - Potfile: " + str(hashes) + " hashes. Unless there are new hashes, I will post an update in " + str(interval) + " minutes.")
+        post ("New " + process + " session - " + potfile +": " + str(hashes) + " hashes currently. Unless there are new hashes, I will post an update in " + str(interval) + " minutes.")
         count = 0
 
         # start monitoring loop
-        while (subprocess.getoutput('pgrep ' + process)) != '':
+        while getpid(process) != 0:
             time.sleep(60)
-            with open(potfile) as l:
-                newhashes = int(sum(1 for _ in l))
+            newhashes = gethashes(potfile)
             if newhashes > hashes:
                 print ("New cracks! Posting update to slack.")
                 post ("New cracks! - Potfile: " + str(newhashes) + " hashes.")
