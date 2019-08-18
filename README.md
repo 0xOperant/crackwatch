@@ -7,6 +7,8 @@ must be added to the `webhook_url` variable in crackwatch.py.
 
 This can be adapted to pretty much any webhook. PRs are welcome.
 
+Note: there is a bash version in the `master` branch.
+
 ---
 
 requirements: slack webhook url (https://api.slack.com/incoming-webhooks)
@@ -19,5 +21,3 @@ usage:        `python3 crackwatch.py -p <process> -f <potfile> -i <interval>`
               <interval> is how often (in minutes) you want slack updates
 
 example:  `python3 crackwatch hashcat hashcat.pot 60`
-
-note: there is a bash version on the master branch
