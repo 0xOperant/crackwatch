@@ -9,7 +9,6 @@
 # example:  python3 crackwatch hashcat hashcat.pot 60
 #
 # author: 0xoperant
-# 	based on https://github.com/secgroundzero/hashslack
 
 import os, sys, getopt, subprocess, json, time
 from urllib import request, parse
@@ -18,8 +17,12 @@ from urllib import request, parse
 try:
     webhook_url = os.environ['WEBHOOK_URL']
 except KeyError:
-    print ("Error: you need to provide a webhook url, like this: export WEBHOOK_URL=<insert url here>")
-    sys.exit(1)
+    try:
+        os.environ['WEBHOOK_URL'] = input('Please enter your webhook url: ')
+        webhook_url = os.environ['WEBHOOK_URL']
+    except ValueError:
+        print ("Error: you need to provide a webhook url", file=sys.stderr)
+        sys.exit(1)
 
 # slack post function
 def post(text):
@@ -29,14 +32,14 @@ def post(text):
         req = request.Request(webhook_url, data=json_data.encode('ascii'), headers={'Content-Type': 'application/json'})
         resp = request.urlopen(req)
     except Exception as em:
-        print ("Error: " + str(em))
+        print ("Error: " + str(em), file=sys.stderr)
 
 # process checking function
 def getpid(process):
     try:
         pid = int(subprocess.check_output(['pgrep', process], encoding='UTF-8'))
     except subprocess.CalledProcessError as e:
-        print (e.output)
+        print (e.output, file=sys.stderr)
         pid = 0
     return pid
 
@@ -46,7 +49,7 @@ def gethashes(potfile):
         with open(potfile) as l:
             cracks = int(sum(1 for _ in l))
     except IOError as e:
-            print (e)
+            print (e, file=sys.stderr)
     return cracks
         
 def main(argv):
@@ -71,7 +74,7 @@ def main(argv):
     if getpid(process) != 0:
         hashes = gethashes(potfile)
         print ('Monitoring ' + process + '! I will tell you when there are new hashes. Otherwise, I will post an update every ' + str(interval) + ' minutes.')
-        post ("New " + process + " session - " + potfile +": " + str(hashes) + " hashes currently. Unless there are new hashes, I will post an update in " + str(interval) + " minutes.")
+        post ("New " + process + " session! Watching for hashes in " + potfile +": " + str(hashes) + " hashes currently. Unless there are new hashes, I will post an update in " + str(interval) + " minutes.")
         count = 0
 
         # start monitoring loop
