@@ -3,7 +3,7 @@ Crackwatch monitors a specified password cracking process and posts periodic upd
 I've used it successfully with hashcat and mdxfind, but it should be able to work with others, like john.
 Be sure to specify the full path to the potfile, if it's not in the same directory. The interval is the
 length of time between updates, in minutes. For example, `60` would post updates every hour. Your webhook url 
-must be added to the `webhook_url` variable in crackwatch.py.
+should be set as an environment variable before starting crackwatch.
 
 This can be adapted to pretty much any webhook. PRs are welcome.
 
